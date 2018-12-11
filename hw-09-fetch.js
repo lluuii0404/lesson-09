@@ -13,37 +13,26 @@ var pic = document.body.appendChild(
 pic.style = `margin: 10px 0;`
 
 function getPicture (event) {
-    event.preventDefault()
-    var link = document.getElementsByTagName("input")[0].value
-
-    if (link.indexOf("https://") === -1){
-        document.getElementsByTagName("input")[0].value = ""
+    var link = this.value
+    if (this.value.indexOf("https://") === -1){
+        this.value = ""
         message.innerText = "Oшибка! Введите ссылку на картинку"
         pic.src = ""
         return 
     } else {
-        
-        document.getElementsByTagName("input")[0].value = ""
+        this.value = ""
         message.innerText = ""
-        var request = new Request( 
-            link,
-            {
-                mode: "cors"
-            }
-        )
 
-        fetch (request)
-            .then( response => { response.blob()
-                .then( blobImg => {
-                    var imgRef = URL.createObjectURL(blobImg)
-                    pic.src = imgRef
-                    pic.width = "200"
+        fetch (link, {mode: "cors"})
+            .then( response => { 
+                response.blob()
+                    .then( blobImg => {
+                        pic.src = URL.createObjectURL(blobImg)
+                        pic.width = "200"
+                    })
                 })
-            })
-    }
-   
+        }
 }
-
 input_link.removeEventListener("click", getPicture)
 
 
