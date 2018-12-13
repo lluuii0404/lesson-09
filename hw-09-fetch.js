@@ -1,6 +1,7 @@
 var input_link = document.body.appendChild(
     document.createElement("input")
 )
+input_link.style = `outline: none;`
 input_link.placeholder = "Введите ссылку на картинку"
 input_link.addEventListener("change", getPicture)
 
@@ -13,17 +14,13 @@ var pic = document.body.appendChild(
 pic.style = `margin: 10px 0;`
 
 function getPicture (event) {
-    var link = this.value
     if (this.value.indexOf("https://") === -1){
         this.value = ""
-        message.innerText = "Oшибка! Введите ссылку на картинку"
         pic.src = ""
+        message.innerText = "Oшибка! Введите ссылку на картинку"
         return 
     } else {
-        this.value = ""
-        message.innerText = ""
-
-        fetch (link, {mode: "cors"})
+        fetch (this.value, {mode: "cors"})
             .then( response => { 
                 response.blob()
                     .then( blobImg => {
@@ -32,6 +29,8 @@ function getPicture (event) {
                     })
                 })
         }
+        this.value = ""
+        message.innerText = ""
 }
 input_link.removeEventListener("click", getPicture)
 
